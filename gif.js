@@ -3,49 +3,37 @@ $(document).ready(function(){
 
 	var boxers = ['Julio Cesar Chavez', 'Sugar Ray Leonard', 'Mike Tyson', 'Marvin Hagler', 'Floyd Mayweather Jr', 'Manny Paquiao', 'Miguel Cotto', 'Sugar Shane Mosley', 'Evander Holyfield', 'Lennox Lewis'];
 
-	function alertBoxerName (){
-	
+	function displayBoxerGif (){
 
-
-	
-		var boxer = $(this).data('boxer');
+		var boxer = $(this).attr('data-name');
 		var queryURL = "http://api.giphy.com/v1/gifs/search?q=" + boxer + "&api_key=dc6zaTOxFJmzC&limit=10";
 
-	
+		$.ajax({url:queryURL, method: 'GET'}).done(function(response) {
+			var results = response.data;
+			console.log(response.data);
 
-		$.ajax({
-			url: queryURL,
-			method: 'GET'
-		})
+			for(var i=0; i < results.length; i++){
 
-		.done(function(response) {
+				if (results[i].rating == "r" || results[i].rating == "pg-13"){
+				}
 
-		console.log(queryURL);
+				else {
+					var boxerDiv = $('<div class="item">')
+					var rating = results[i].rating;
+					var p = $('<p>').text("Rating: "+ rating);
+					var personImage = $('<img>');
+					personImage.attr('src',results[i].images.fixed_height.url);
 
-		console.log(response)
+					boxerDiv.append(p)
+					boxerDiv.append(personImage)	
 
-		var results = response.data;
+					$("#gifsAppearHere").prepend(boxerDiv);
 
-		for (var i = 0; i < results.length; i++) {
-			var boxerDiv = $('<div class="item">');
-
-			var p = $('<p>').text("Rating: " + results[i].rating);
-
-			var boxerImage = $('<img>');
-			boxerImage.attr('src', results[i].images.fixed_height.url);
-
-			boxerDiv.append(p);
-			boxerDiv.append(boxerImage);
-
-			$('#gifsAppearHere').prepend(boxerDiv);
-
-		}
-
+				};
+			};
+			
 		});
-
-	}	
-
-
+	};
 	function renderButtons(){
 
 		$('#boxerView').empty();
@@ -59,7 +47,7 @@ $(document).ready(function(){
 			$('#boxerView').append(a);
 		}
 	}	
-	
+
 	$('#addBoxer').on('click', function(){
 
 		var boxer = $('#boxer-input').val().trim();
@@ -69,98 +57,14 @@ $(document).ready(function(){
 		renderButtons();
 
 		return false;
+	});	
 
+	$(document).on('click', '.boxer', displayBoxerGif);
 
-
-	});
-
-	$(document).on('click', '.boxer', alertBoxerName);
-	
 	renderButtons();
 
-});
-
-// $(document).ready(function(){
-
-// 	var boxers = ['Julio Cesar Chavez', 'Sugar Ray Leonard', 'Mike Tyson', 'Marvin Hagler', 'Floyd Mayweather Jr', 'Manny Paquiao', 'Miguel Cotto', 'Sugar Shane Mosley', 'Evander Holyfield', 'Lennox Lewis'];
-
-// 	function alertBoxerName (){
-// 		var boxer = $(this).data('boxer');
-
-// 		// alert(boxerName);
-
-// 	}
-
-// 	$('button').on('click', function(){
-// 		var boxer = $(this).data('boxer');
-// 		var queryURL = "http://api.giphy.com/v1/gifs/search?q=" + boxer + "&api_key=dc6zaTOxFJmzC&limit=10";
-
-// 		$('#gifsAppearHere').empty();
-
-// 		$.ajax({
-// 			url: queryURL,
-// 			method: 'GET'
-// 		})
-
-// 		.done(function(response) {
-
-// 		console.log(queryURL);
-
-// 		console.log(response)
-
-// 		var results = response.data;
-
-// 		for (var i = 0; i < results.length; i++) {
-// 			var boxerView = $('<div>');
-
-// 			var rating = results[i].rating;
-
-// 			var p = $('<p>').text("Rating: " + results[i].rating);
-
-// 			var boxerImage = $('<img>');
-// 			boxerImage.attr('src', results[i].images.fixed_height.url);
-
-// 			boxerView.append(p);
-// 			boxerView.append(boxerImage);
-
-// 			$('#gifsAppearHere').prepend(boxerView);
-
-// 		}
-
-// 		});
-
-// 	});	
-
-// 	function renderButtons(){
-
-// 		$('#boxerView').empty();
-
-// 		for(var i = 0; i < boxers.length; i++) {
-
-// 			var a = $('<button>');
-// 			a.addClass('boxer');
-// 			a.attr('data-name', boxers[i]);
-// 			a.text(boxers[i]);
-// 			$('#boxerView').append(a);
-// 		}
-// 	}	
 	
-// 	$('#addBoxer').on('click', function(){
-
-// 		var boxer = $('#boxer-input').val().trim();
-
-// 		boxers.push(boxer);
-
-// 		renderButtons();
-
-// 		return false;
-
-
-
-// 	});
-
-// 	$(document).on('click', '.boxer', alertBoxerName);
+});	
 	
-// 	renderButtons();
 
-// });
+
