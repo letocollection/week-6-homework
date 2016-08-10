@@ -1,4 +1,4 @@
-/*body {
+body {
 	background-color: beige;
 };
 
@@ -14,9 +14,15 @@ header {
 	height: 100px;
 }
 
-img {
-
+img,
+p {
+	padding: 5px;
 	float: left;
 
 
-}*/
+}
+
+button {
+	padding: 10px;
+	margin: 10px;
+}
