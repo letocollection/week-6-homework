@@ -3,6 +3,8 @@ $(document).ready(function(){
 
 	var boxers = ['Julio Cesar Chavez', 'Sugar Ray Leonard', 'Mike Tyson', 'Marvin Hagler', 'Floyd Mayweather Jr', 'Manny Paquiao', 'Miguel Cotto', 'Sugar Shane Mosley', 'Evander Holyfield', 'Lennox Lewis'];
 
+	//========================================================
+
 	function displayBoxerGif (){
 
 		var boxer = $(this).attr('data-name');
@@ -23,6 +25,17 @@ $(document).ready(function(){
 					var p = $('<p>').text("Rating: "+ rating);
 					var personImage = $('<img>');
 					personImage.attr('src',results[i].images.fixed_height.url);
+					personImage.click(function(){
+						var curSource = $(this).attr("src");
+						if(curSource.indexOf("_s.gif")!== -1){
+							var newSource = curSource.replace("_s.gif", ".gif")
+						}
+						else{
+							var newSource = curSource.replace(".gif", "_s.gif")
+						}
+						$(this).attr("src", newSource);
+						
+					})
 
 					boxerDiv.append(p)
 					boxerDiv.append(personImage)	
@@ -34,6 +47,13 @@ $(document).ready(function(){
 			
 		});
 	};
+
+	
+
+	
+//========================================================
+
+	
 	function renderButtons(){
 
 		$('#boxerView').empty();
@@ -48,6 +68,10 @@ $(document).ready(function(){
 		}
 	}	
 
+	
+//==========================================================
+
+	
 	$('#addBoxer').on('click', function(){
 
 		var boxer = $('#boxer-input').val().trim();
